@@ -1,7 +1,7 @@
-function route(handle, getData, res) {
-    var func = handle[getData.action];
+function route(handle, query, res) {
+    var func = handle[query.action];
     if (typeof func === 'function') {
-        func(getData, res);
+        func(query, res);
     } else {
         res.writeHead(404, {"Content-Type": "text/plain"});
         res.write("404 Not found");

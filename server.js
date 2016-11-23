@@ -23,7 +23,7 @@ function start(PORT, route, handle){
             if (req.method == "POST"){
                 data = parse(data, req.headers['content-type']);
             }
-            else{
+            else if(req.method == "GET"){
                 let url = req.url.replace('/?', '');
                 data = querystring.parse(url);
             }
