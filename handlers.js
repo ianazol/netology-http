@@ -1,12 +1,14 @@
 let db = [];
 
 function register(query, res){
-    if (!!query.name && !!query.quantity){
-        let id = db.length;
+    if (query.name){
+        let id = db.length,
+            quantity = Number(query.quantity) || 0;
+
         db[id] = {
             "id": id,
             "name": query.name,
-            "quantity": Number(query.quantity)
+            "quantity": quantity
         };
 
         res.writeHead(200, 'OK', {'Content-Type': 'application/json'});
@@ -23,7 +25,7 @@ function register(query, res){
 }
 
 function add(query, res){
-    if (!!query.id && !!query.quantity && !!db[query.id]){
+    if (query.id && query.quantity && db[query.id]){
         let id = query.id;
         db[id].quantity += Number(query.quantity);
 
@@ -41,9 +43,11 @@ function add(query, res){
 }
 
 function remove(query, res){
-    if (!!query.id && !!query.quantity && !!db[query.id]){
+    if (query.id && query.quantity && db[query.id]){
         let id = query.id;
         db[id].quantity -= Number(query.quantity);
+        if (db[id].quantity < 0)
+            db[id].quantity = 0;
 
         res.writeHead(200, 'OK', {'Content-Type': 'application/json'});
         res.write(JSON.stringify({
